@@ -50,12 +50,12 @@ export default class ListviewViewController extends mwf.ViewController {
      * for views with listviews: bind a list item to an item view
      * TODO: delete if no listview is used or if databinding uses ractive templates
      */
-    bindListItemView(listviewid, itemview, itemobj) {
+    /*bindListItemView(listviewid, itemview, itemobj) {
         // TODO: implement how attributes of itemobj shall be displayed in itemview
         itemview.root.querySelector("img").src = itemobj.src;
         itemview.root.querySelector("h2").textContent = itemobj.title;
         itemview.root.querySelector("h3").textContent = itemobj.added;
-    }
+    }*/
 
     /*
      * for views with listviews: react to the selection of a listitem
@@ -70,9 +70,9 @@ export default class ListviewViewController extends mwf.ViewController {
      * for views with listviews: react to the selection of a listitem menu option
      * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
      */
-    onListItemMenuItemSelected(menuitemview, itemobj, listview) {
+    /*onListItemMenuItemSelected(menuitemview, itemobj, listview) {
         // TODO: implement how selection of the option menuitemview for itemobj shall be handled
-    }
+    }*/
 
     /*
      * for views with dialogs
@@ -83,6 +83,15 @@ export default class ListviewViewController extends mwf.ViewController {
         super.bindDialog(dialogid, dialogview, dialogdataobj);
 
         // TODO: implement action bindings for dialog, accessing dialog.root
+    }
+
+    editItem(item) {
+        item.title += (" "  + item.title);
+        this.crudops.update(item._id, item).then(() => this.updateInListview(item._id, item));
+    }
+
+    deleteItem(item) {
+        this.crudops.delete(item._id).then(() => this.removeFromListview(item._id));
     }
 
 }
