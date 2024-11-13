@@ -30,7 +30,7 @@
     <header>
         <button class="mwf-imgbutton mwf-left-align mwf-img-sandwich"></button>
         <h1>Medien</h1>
-        <button class="mwf-imgbutton mwf-right-align mwf-img-plus"></button>
+        <button class="mwf-imgbutton mwf-right-align mwf-img-plus" id="addNewMediaItem"></button>
     </header>
     <main class="mwf-scrollview">
         <ul class="mwf-listview" data-mwf-listitem-view="myapp-listitemView" data-mwf-listitem-menu="myapp-mediaItemMenu">
@@ -38,7 +38,7 @@
                 <img class="mwf-left-align" src="{{src}}" />
                 <div class="mwf-li-titleblock">
                     <h2>{{title}}</h2>
-                    <h3>{{added}}</h3>
+                    <h3>{{addedDateString}}</h3>
                 </div>
                 <button class="mwf-imgbutton mwf-right-align mwf-img-options-vertical mwf-listitem-menu-control"></button>
             </li>
@@ -56,7 +56,24 @@
             <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Löschen</li>
         </ul>
     </main>
+</div>
 
+
+<div class="mwf-view" id="myapp-mediaReadview" data-mwf-viewcontroller="ReadviewViewController">
+    <div class="mwf-template mwf-databind" data-mwf-templatename="myapp-mediaReadviewTemplate">
+        <header>
+            <button class="mwf-imgbutton mwf-left-align mwf-img-sandwich"></button>
+            <h1 class="mwf-left-align mwf-dyncontent">{{item.title}}</h1>
+            <button class="mwf-imgbutton mwf-right-align mwf-img-delete" on-click="deleteItem"></button>
+        </header>
+        <main class="mwf-scrollview">
+            <img src="{{item.src}}" alt="">
+    
+        </main>
+        <footer>
+            <button class="mwf-left-align mwf-imgbutton mwf-img-backward mwf-back"> </button>
+        </footer>
+    </div>
 </div>
 
 </body>
