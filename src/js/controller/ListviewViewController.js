@@ -1,8 +1,8 @@
 /**
  * @author Jörn Kreutel
  */
-import {mwf} from "vfh-iam-mwf-base";
-import {mwfUtils} from "vfh-iam-mwf-base";
+import { mwf } from "vfh-iam-mwf-base";
+import { mwfUtils } from "vfh-iam-mwf-base";
 import * as entities from "../model/MyEntities.js";
 
 export default class ListviewViewController extends mwf.ViewController {
@@ -19,10 +19,9 @@ export default class ListviewViewController extends mwf.ViewController {
         // TODO: do databinding, set listeners, initialise the view
         const addNewElementAction = this.root.querySelector("header .mwf-img-plus");
         addNewElementAction.onclick = () => {
-            const newMediaItem = new entities.MediaItem("new", "https://picsum.photos/100/100");
-            newMediaItem.create().then(() => this.addToListview(newMediaItem));
+            this.createNewItem();
         }
-
+        
         // call the superclass once creation is done
         super.oncreate();
     }
@@ -60,7 +59,7 @@ export default class ListviewViewController extends mwf.ViewController {
     onListItemSelected(itemobj, listviewid) {
         // TODO: implement how selection of itemobj shall be handled
         //alert(`selected: " ${itemobj.title}`);
-        this.nextView("myapp-mediaReadview", {item: itemobj})
+        this.nextView("myapp-mediaReadview", { item: itemobj })
     }
 
     /*
@@ -88,14 +87,41 @@ export default class ListviewViewController extends mwf.ViewController {
     }
 
     editItem(item) {
-        item.title += (" "  + item.title);
-        item.update().then(() => this.updateInListview(item._id, item));
+        this.showDialog("mediaItemDialog", {
+            item: item,
+            actionBindings: {
+                submitForm: ((event) => {
+                    event.original.preventDefault();
+                    item.update().then(() => {
+                        this.updateInListview(item._id, item);
+                    });
+                    this.hideDialog();
+                })
+            }
+        });
     }
+
 
     deleteItem(item) {
         item.delete().then(() => this.removeFromListview(item._id));
     }
 
-    
+    createNewItem() {
+        var newItem = new entities.MediaItem("", "https://picsum.photos/100/100");
+        this.showDialog("mediaItemDialog", {
+            item: newItem,
+            actionBindings: {
+                submitForm: ((event) => {
+                    event.original.preventDefault();
+                    newItem.create().then(() => {
+                        this.addToListview(newItem);
+                    });
+                    this.hideDialog();
+                })
+            }
+        });
+    }
+
+
 
 }
